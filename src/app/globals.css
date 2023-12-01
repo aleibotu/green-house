@@ -69,3 +69,11 @@ a {
 ::-webkit-scrollbar-track {
     border-radius: 10px;
 }
+
+/**
+map box logo
+ */
+.mapboxgl-ctrl {
+    display: none !important;
+}
+

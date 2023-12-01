@@ -22,7 +22,7 @@ export function MapView() {
     const layers = [];
     return (
         <div style={{
-            height: '100vh',
+            height: 'calc(100vh - 58px)',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
