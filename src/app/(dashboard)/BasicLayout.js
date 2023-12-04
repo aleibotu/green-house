@@ -3,22 +3,39 @@ import {useState} from "react";
 import {useAtom} from "jotai";
 import {Avatar, ConfigProvider, Layout, Menu, Switch, theme, Typography} from "antd";
 
-import {currentMenu, items} from "@/store/state";
+import {currentMenu, items, menuMapping} from "@/store/state";
+import {usePathname} from "next/navigation";
 
 const {Text} = Typography;
 const {defaultAlgorithm, darkAlgorithm} = theme;
 
+function getTheme() {
+    return window.localStorage.getItem('theme')
+}
+
+// todo 好像一刷新，这个全局状态就又刷新了，很不爽.
+
 export default function BasicLayout({children}) {
-    const [, setMenu] = useAtom(currentMenu)
-    const [light, setTheme] = useState(true);
+    const [menu, setMenu] = useAtom(currentMenu)
+    const [l, setL] = useState(getTheme);
+    const pathname = usePathname();
+    console.log(pathname)
 
     const onChange = (checked) => {
-        setTheme(checked)
+        const light = checked ? 'light' : 'dark';
+        window.localStorage.setItem('theme', light)
+        setL(light)
     }
 
     const handleSelect = (e) => {
         setMenu(e.key)
     }
+
+    const handleClick = (e) => {
+        console.log(e)
+    }
+
+    const light = l === 'light';
 
     return (
         <ConfigProvider
@@ -46,12 +63,13 @@ export default function BasicLayout({children}) {
                                 </Typography.Title>
                             </div>
                             <Menu
-                                defaultSelectedKeys={['5']}
+                                defaultSelectedKeys={[menuMapping[pathname] ? menuMapping[pathname] : '5']}
                                 defaultOpenKeys={['sub1']}
                                 mode="inline"
                                 theme={light ? 'light' : 'dark'}
                                 items={items}
                                 onSelect={handleSelect}
+                                onClick={handleClick}
                             />
                         </div>
 
@@ -80,7 +98,7 @@ export default function BasicLayout({children}) {
                     </div>
 
                     {/* body */}
-                    <div style={{flex: 1, height: '100vh'}}>
+                    <div style={{flex: 1, overflowY: "auto"}}>
                         {children}
                     </div>
                 </div>

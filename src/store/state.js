@@ -13,16 +13,22 @@ function getItem(label, key, icon, children, type) {
     };
 }
 
+export const menuMapping = {
+    '/draft': 'sub1',
+    '/templetes': 'sub2',
+    '/mySolutions': 'sub3'
+}
+
 export const items = [
     // getItem(<Link href="/draft">新建</Link>, '1', <PieChartOutlined/>),
-    getItem(<Link href="/draft">新建方案</Link>, 'sub1', <MailOutlined/>, [
-        getItem('温室配置', '5'),
-        getItem('作物配置', '6'),
+    getItem('新建方案', 'sub1', <MailOutlined/>, [
+        getItem(<Link href="/draft">温室配置</Link>, '5'),
+        getItem(<Link href="/draft">作物配置</Link>, '6'),
         // getItem('Option 7', '7'),
         // getItem('Option 8', '8'),
     ]),
-    getItem(<Link href="/templetes">方案模板</Link>, '2', <DesktopOutlined/>),
-    getItem(<Link href="/mySolutions">我的方案</Link>, '3', <ContainerOutlined/>),
+    getItem(<Link href="/templetes">方案模板</Link>, 'sub2', <DesktopOutlined/>),
+    getItem(<Link href="/mySolutions">我的方案</Link>, 'sub3', <ContainerOutlined/>),
 
     // getItem('我的方案', 'sub2', <AppstoreOutlined/>, [
     //     getItem('Option 9', '9'),
