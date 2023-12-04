@@ -9,17 +9,10 @@ import {usePathname} from "next/navigation";
 const {Text} = Typography;
 const {defaultAlgorithm, darkAlgorithm} = theme;
 
-function getTheme() {
-    return window.localStorage.getItem('theme')
-}
-
-// todo 好像一刷新，这个全局状态就又刷新了，很不爽.
-
 export default function BasicLayout({children}) {
     const [menu, setMenu] = useAtom(currentMenu)
-    const [l, setL] = useState(getTheme);
+    const [l, setL] = useState(window.localStorage.getItem('theme'));
     const pathname = usePathname();
-    console.log(pathname)
 
     const onChange = (checked) => {
         const light = checked ? 'light' : 'dark';
@@ -32,7 +25,7 @@ export default function BasicLayout({children}) {
     }
 
     const handleClick = (e) => {
-        console.log(e)
+
     }
 
     const light = l === 'light';

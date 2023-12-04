@@ -1,3 +1,4 @@
+'use client'
 import {Button, Card, Input, Segmented, Space, Typography} from "antd";
 import {useState} from "react";
 import {MapView} from "@/app/(dashboard)/draft/mapView";

@@ -1,6 +1,4 @@
-'use client'
-
-import {Typography} from "antd";
+import Logo from "@/app/logo";
 import Link from "next/link";
 
 export default function Home() {
@@ -10,9 +8,7 @@ export default function Home() {
                 <div style={{
                     display: "flex"
                 }}>
-                    <Typography.Title level={2} style={{padding: '0.3em 0.5em', color: 'white', margin: 0}}>
-                        Green House
-                    </Typography.Title>
+                    <Logo />
                     <div style={{flex: 1}}>
                         <div style={{
                             display: 'flex',
