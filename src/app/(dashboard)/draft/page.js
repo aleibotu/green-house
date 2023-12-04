@@ -1,7 +1,7 @@
 'use client'
 import {RightArea} from './rightArea'
-import {HouseConf} from "@/app/draft/houseConf";
-import {PlantConf} from "@/app/draft/plantConf";
+import {HouseConf} from "@/app/(dashboard)/draft/houseConf";
+import {PlantConf} from "@/app/(dashboard)/draft/plantConf";
 import {useAtom} from "jotai";
 import {currentMenu} from "@/store/state";
 

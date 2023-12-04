@@ -1,8 +1,8 @@
 import {Button, Card, Input, Segmented, Space, Typography} from "antd";
 import {useState} from "react";
-import {MapView} from "@/app/draft/mapView";
-import {ModelView} from "@/app/draft/modelView";
-import {ModalView} from "@/app/draft/modalView";
+import {MapView} from "@/app/(dashboard)/draft/mapView";
+import {ModelView} from "@/app/(dashboard)/draft/modelView";
+import {ModalView} from "@/app/(dashboard)/draft/modalView";
 import {FullscreenOutlined} from "@ant-design/icons";
 
 function Display({type = '地图'}) {

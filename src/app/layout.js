@@ -1,5 +1,5 @@
 import {Inter} from 'next/font/google'
-import BasicLayout from "@/app/BasicLayout";
+import StyledComponentsRegistry from './../lib/AntdRegistry';
 
 import './globals.css'
 import "@ant-design/charts/dist/index.css"
@@ -15,9 +15,9 @@ export default function RootLayout({children}) {
     return (
         <html lang="en">
             <body className={inter.className}>
-                <BasicLayout>
+                <StyledComponentsRegistry>
                     {children}
-                </BasicLayout>
+                </StyledComponentsRegistry>
             </body>
         </html>
     )
