@@ -40,16 +40,17 @@ export function HouseConf() {
                         <Cascader
                             options={[
                                 {
-                                    value: 'zhejiang',
-                                    label: 'Zhejiang',
+                                    value: '1',
+                                    label: '上海',
                                     children: [
                                         {
-                                            value: 'hangzhou',
-                                            label: 'Hangzhou',
+                                            value: '2',
+                                            label: '金山',
                                         },
                                     ],
                                 },
                             ]}
+                            defaultValue={['1', '2']}
                         />
                         <Button
                             onClick={() => setShowMap(!showMap)}

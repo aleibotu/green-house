@@ -17,6 +17,7 @@
     "@deck.gl/layers": "^8.9.32",
     "@deck.gl/mapbox": "^8.9.32",
     "@deck.gl/mesh-layers": "^8.9.32",
+    "@react-three/drei": "^9.90.0",
     "@react-three/fiber": "^8.15.11",
     "@types/three": "^0.158.3",
     "antd": "^5.11.5",

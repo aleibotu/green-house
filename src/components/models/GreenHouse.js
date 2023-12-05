@@ -1,37 +1,20 @@
 'use client'
-import React, { useRef, useState } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
-
-function Box(props) {
-    // This reference will give us direct access to the mesh
-    const meshRef = useRef()
-    // Set up state for the hovered and active state
-    const [hovered, setHover] = useState(false)
-    const [active, setActive] = useState(false)
-    // Subscribe this component to the render-loop, rotate the mesh every frame
-    useFrame((state, delta) => (meshRef.current.rotation.x += delta))
-    // Return view, these are regular three.js elements expressed in JSX
-    return (
-        <mesh
-            {...props}
-            ref={meshRef}
-            scale={active ? 1.5 : 1}
-            onClick={() => setActive(!active)}
-            onPointerOver={() => setHover(true)}
-            onPointerOut={() => setHover(false)}>
-            <boxGeometry args={[1, 1, 1]} />
-            <meshStandardMaterial color={hovered ? 'hotpink' : 'orange'} />
-        </mesh>
-    )
-}
+import React, { useRef, Suspense } from 'react'
+import {Canvas, useLoader} from '@react-three/fiber'
+import {GLTFLoader} from "three/addons";
+import {OrbitControls} from "@react-three/drei";
 
 export function Model() {
+    const ref = useRef();
+    const all = useLoader(GLTFLoader, 'https://mxzn-top.oss-cn-shanghai.aliyuncs.com/temp/all.glb')
     return (
         <Canvas style={{height: '100%'}}>
             <ambientLight />
             <pointLight position={[10, 10, 10]} />
-            <Box position={[-1.2, 0, 0]} />
-            <Box position={[1.2, 0, 0]} />
+            <Suspense fallback={null}>
+                <primitive ref={ref} object={all.scene}/>
+            </Suspense>
+            <OrbitControls/>
         </Canvas>
     )
 }
