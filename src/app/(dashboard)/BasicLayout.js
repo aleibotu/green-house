@@ -5,18 +5,19 @@ import {Avatar, ConfigProvider, Layout, Menu, Switch, theme, Typography} from "a
 
 import {currentMenu, items, menuMapping} from "@/store/state";
 import {usePathname} from "next/navigation";
+import {global} from "styled-jsx/css";
 
 const {Text} = Typography;
 const {defaultAlgorithm, darkAlgorithm} = theme;
 
 export default function BasicLayout({children}) {
     const [menu, setMenu] = useAtom(currentMenu)
-    const [l, setL] = useState(window.localStorage.getItem('theme'));
+    const [l, setL] = useState(global?.window?.localStorage.getItem('theme'));
     const pathname = usePathname();
 
     const onChange = (checked) => {
         const light = checked ? 'light' : 'dark';
-        window.localStorage.setItem('theme', light)
+        global?.window?.localStorage.setItem('theme', light)
         setL(light)
     }
 
@@ -24,7 +25,7 @@ export default function BasicLayout({children}) {
         setMenu(e.key)
     }
 
-    const handleClick = (e) => {
+    const handleClick = () => {
 
     }
 

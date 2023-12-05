@@ -3,7 +3,7 @@ import {Button, Card, Input, Segmented, Space, Typography} from "antd";
 import {useState} from "react";
 import {MapView} from "@/app/(dashboard)/draft/mapView";
 import {ModelView} from "@/app/(dashboard)/draft/modelView";
-import {ModalView} from "@/app/(dashboard)/draft/modalView";
+import {ChartView} from "@/app/(dashboard)/draft/chartView";
 import {FullscreenOutlined} from "@ant-design/icons";
 
 function Display({type = '地图'}) {
@@ -24,7 +24,7 @@ function Display({type = '地图'}) {
     if (type === '结果分析') {
         return (
             <>
-                <ModalView/>
+                <ChartView/>
             </>
         )
     }
