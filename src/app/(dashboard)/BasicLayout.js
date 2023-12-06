@@ -1,7 +1,7 @@
 'use client';
 import {useState} from "react";
 import {useAtom} from "jotai";
-import {Avatar, ConfigProvider, Layout, Menu, Switch, theme, Typography} from "antd";
+import {Avatar, ConfigProvider, Flex, Layout, Menu, Switch, theme, Typography} from "antd";
 
 import {currentMenu, items, menuMapping} from "@/store/state";
 import {usePathname} from "next/navigation";
@@ -38,24 +38,25 @@ export default function BasicLayout({children}) {
             }}
         >
             <Layout style={{backgroundColor: light ? '#fff' : '#000'}}>
-                <div style={{display: 'flex', justifyContent: 'space-between', height: '100vh'}}>
+                <Flex>
                     {/* left bar */}
-                    <div
+                    <Flex
+                        vertical
+                        justify="space-between"
                         style={{
                             width: 240,
-                            display: 'flex',
-                            flexDirection: 'column',
                             backgroundColor: light ? '#fafafa' : '#000c17'
                         }}
                     >
-                        <div style={{flex: 1}}>
-                            <div style={{
+                        <Flex
+                            vertical
+                            style={{
                                 backgroundColor: light ? '#fbf6ef' : '#000C26',
-                            }}>
-                                <Typography.Title level={2} style={{padding: '0.3em 0.5em', margin: 0}}>
-                                    Green House
-                                </Typography.Title>
-                            </div>
+                            }}
+                        >
+                            <Typography.Title level={2} style={{padding: '0.3em 0.5em', margin: 0}}>
+                                Green House
+                            </Typography.Title>
                             <Menu
                                 defaultSelectedKeys={[menuMapping[pathname] ? menuMapping[pathname] : '5']}
                                 defaultOpenKeys={['sub1']}
@@ -65,19 +66,19 @@ export default function BasicLayout({children}) {
                                 onSelect={handleSelect}
                                 onClick={handleClick}
                             />
-                        </div>
+                        </Flex>
 
-                        <div
+                        <Flex
+                            align="center"
+                            justify="space-between"
                             style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
                                 padding: '12px 8px',
                                 backgroundColor: light ? '#fbf6ef' : '#000C26'
                             }}
                         >
-                            <div style={{display: 'flex', alignItems: 'center'}}>
+                            <Flex align="center">
                                 <Avatar size={40}>USER</Avatar>
+                                {/* inline element, but padding required. */}
                                 <div style={{display: 'flex', flexDirection: 'column', paddingLeft: 12}}>
                                     <Text>
                                         Admin
@@ -86,16 +87,16 @@ export default function BasicLayout({children}) {
                                         some lazy guy.
                                     </Text>
                                 </div>
-                            </div>
+                            </Flex>
                             <Switch checked={light} onChange={onChange}/>
-                        </div>
-                    </div>
+                        </Flex>
+                    </Flex>
 
                     {/* body */}
-                    <div style={{flex: 1, overflowY: "auto"}}>
+                    <Flex flex={1} style={{height: '100vh', overflowY: 'auto'}}>
                         {children}
-                    </div>
-                </div>
+                    </Flex>
+                </Flex>
             </Layout>
         </ConfigProvider>
     )

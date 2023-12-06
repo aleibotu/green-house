@@ -1,30 +1,25 @@
-import {Button, Card, DatePicker, Divider, Space} from "antd";
-import {Line} from "@ant-design/charts";
-import json from './../../../mock/weathers2.json'
-import {useState} from "react";
-
-const keys = [
-    "comp1.Air.T(温度)",
-    "comp1.Air.RH(相对湿度)",
-    "comp1.Air.ppm(CO2浓度)",
-    "common.Iglob.Value(光照强度)",
-    "comp1.LAI.Value(叶面积指数)",
-    "comp1.Harvest.CumFruitDW(干重果实)",
-    "comp1.Harvest.CumFruitFW(干物质到叶片)",
-    "comp1.Harvest.CumFruitCount(产量)",
-    "common.ConBoiler.GasUse(加热天然气使用)",
-    "GasUse(天然气使用)"
-]
-
-// const options = keys.map(i => ({label: i, value: i}))
+import {useEffect, useState} from "react"
+import {Button, Card, DatePicker, Divider, Flex, Space, Typography} from "antd"
+import {Line} from "@ant-design/charts"
 
 export function ChartView() {
-    // const [data, setData] = useState(json)
+    return (
+        <div style={{
+            display: 'flex',
+            flexDirection: "column",
+            gap: 8,
+            height: 'calc(100vh - 58px)',
+            overflowY: 'auto',
+            padding: '0.5em'
+        }}>
+            <SectionCard url="https://mxzn-top.oss-cn-shanghai.aliyuncs.com/data/weathers_cate1.json" title="环境信息"/>
+            <SectionCard url="https://mxzn-top.oss-cn-shanghai.aliyuncs.com/data/weathers_cate2.json" title="作物信息"/>
+            <SectionCard url="https://mxzn-top.oss-cn-shanghai.aliyuncs.com/data/weathers_cate3.json" title="运营信息"/>
+        </div>
+    )
+}
 
-    // const handleChange = (arr) => {
-    //     let difference = keys.filter(x => !arr.includes(x));
-    //     setData(json.filter(i => !difference.includes(i.category)))
-    // }
+function SectionCard({url, title}) {
     const [dates, setDates] = useState(null);
     const [value, setValue] = useState(null);
     const disabledDate = (current) => {
@@ -35,6 +30,7 @@ export function ChartView() {
         const tooEarly = dates[1] && dates[1].diff(current, 'days') >= 7;
         return !!tooEarly || !!tooLate;
     };
+
     const onOpenChange = (open) => {
         if (open) {
             setDates([null, null]);
@@ -44,59 +40,61 @@ export function ChartView() {
     };
 
     return (
-        <div style={{display: 'flex', flexDirection: "column", gap: 8, overflowY: 'scroll', padding: '0.5em'}}>
-            <Card>
-                <div style={{display: 'flex'}}>
-                    {/*<div style={{width: 200}}>*/}
-                    {/*    <Typography.Title level={5}>环境信息</Typography.Title>*/}
-                    {/*    <div>*/}
-                    {/*        <Checkbox.Group options={options} defaultValue={[...keys]} onChange={handleChange}/>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
-                    <div style={{flex: 1}}>
-                        <div style={{display: "flex", flexDirection: 'column'}}>
-                            <div style={{padding: '0 30px'}}>
-                                <Space>
-                                    <Space.Compact block>
-                                        <DatePicker.RangePicker
-                                            value={dates || value}
-                                            disabledDate={disabledDate}
-                                            onCalendarChange={(val) => {
-                                                setDates(val);
-                                            }}
-                                            onChange={(val) => {
-                                                setValue(val);
-                                            }}
-                                            onOpenChange={onOpenChange}
-                                            changeOnBlur
-                                        />
-                                        {/*<Button type="primary">查询</Button>*/}
-                                    </Space.Compact>
-                                    <Button disabled>下载数据</Button>
-                                </Space>
-                                <Divider/>
-                            </div>
-                            <div style={{flex: 1}}>
-                                <div style={{display: 'flex', justifyContent: "space-evenly"}}>
-                                    <LineChart data={json}/>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <Card>
+            <Flex vertical={true} flex={1}>
+                <div>
+                    <Flex justify="space-between">
+                        <Typography>{title}</Typography>
+                        <Space>
+                            <Space.Compact block>
+                                <DatePicker.RangePicker
+                                    value={dates || value}
+                                    disabledDate={disabledDate}
+                                    onCalendarChange={(val) => {
+                                        setDates(val);
+                                    }}
+                                    onChange={(val) => {
+                                        setValue(val);
+                                    }}
+                                    onOpenChange={onOpenChange}
+                                    changeOnBlur
+                                />
+                                {/*<Button type="primary">查询</Button>*/}
+                            </Space.Compact>
+                            <Button disabled>下载数据</Button>
+                        </Space>
+                    </Flex>
+                    <Divider/>
                 </div>
-            </Card>
-        </div>
+                <Flex flex={1} justify="flex-start">
+                    <LineChart url={url}/>
+                </Flex>
+            </Flex>
+        </Card>
     )
 }
 
-function LineChart({data}) {
+function LineChart({url}) {
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        const asyncFetch = () => {
+            fetch(url)
+                .then((response) => response.json())
+                .then((json) => setData(json))
+                .catch((error) => {
+                    console.log('fetch data failed', error);
+                });
+        };
+        asyncFetch();
+    }, [url]);
 
     const config = {
         data,
         xField: 'year',
         yField: 'value',
         seriesField: 'category',
-        width: 800,
+        width: 960,
         height: 600,
         xAxis: {
             type: 'time',
