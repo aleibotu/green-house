@@ -12,22 +12,23 @@ export default function Home() {
             }}>
                 <Flex>
                     <Logo/>
-                    <Flex flex={1}>
+                    <Flex flex={1} justify="space-between">
                         <div style={{
+                            width: '100%',
+                            height: '100%',
                             display: 'flex',
                             alignItems: 'center',
                             flexDirection: 'row-reverse',
                             gap: 16,
                             padding: '0.3em 0.8em',
-                            height: '100%'
                         }}>
-                            <Link href="/draft">
+                            <Link href="/draft" style={{color: 'white'}}>
                                 控制台
                             </Link>
-                            <Link href="/sign">
+                            <Link href="/sign" style={{color: 'white'}}>
                                 sign
                             </Link>
-                            <Link href="/register">
+                            <Link href="/register" style={{color: 'white'}}>
                                 register
                             </Link>
                         </div>
