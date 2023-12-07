@@ -34,7 +34,6 @@ export function RightArea() {
     const [value, setValue] = useState('地图')
 
     function onChange(v) {
-        console.log(v)
         setValue(v)
     }
 

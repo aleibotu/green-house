@@ -1,7 +1,10 @@
 import {useEffect, useState} from "react"
 import {Button, Card, Checkbox, DatePicker, Divider, Flex, Space, Typography} from "antd"
 import {Line} from "@ant-design/charts"
+import dayjs from "dayjs";
 
+import locale from 'antd/es/date-picker/locale/zh_CN';
+import 'dayjs/locale/zh-cn';
 // 设置 : https://mxzn-top.oss-cn-shanghai.aliyuncs.com/data/%E8%AE%BE%E7%BD%AE.json
 const group1 = [
     {
@@ -63,53 +66,30 @@ export function ChartView() {
             overflowY: 'auto',
             padding: '0.5em'
         }}>
-            <SectionCard
-                title="环境信息"
-                group={group1}
-            />
-            <SectionCard
-                title="作物信息"
-                group={group2}
-            />
-            <SectionCard
-                title="运营信息"
-                group={group3}
-            />
+            <SectionCard title="环境信息" group={group1}/>
+            <SectionCard title="作物信息" group={group2}/>
+            <SectionCard title="运营信息" group={group3}/>
         </div>
     )
 }
 
+const dateFormat = 'YYYY/MM/DD';
 function SectionCard({title, group}) {
-    const [dates, setDates] = useState(null);
-    const [value, setValue] = useState(null);
+    const [value, setValue] = useState([dayjs('2019/10/01', dateFormat), dayjs('2020/07/01', dateFormat)]);
     const initChecked = group.map(i => i.url);
     const [checkedVal, setCheckedVal] = useState(initChecked)
 
     const options = group.map((i) => ({label: i.name, value: i.url}))
 
-    const disabledDate = (current) => {
-        if (!dates) {
-            return false;
-        }
-        const tooLate = dates[0] && current.diff(dates[0], 'days') >= 7;
-        const tooEarly = dates[1] && dates[1].diff(current, 'days') >= 7;
-        return !!tooEarly || !!tooLate;
-    };
-
-    const onOpenChange = (open) => {
-        if (open) {
-            setDates([null, null]);
-        } else {
-            setDates(null);
-        }
-    };
 
     const onChange = (checkedValues) => {
-        console.log(checkedValues)
         setCheckedVal(checkedValues)
     }
 
-    // todo resize func for canvas chart.
+    const range = {
+        start: dayjs(value[0]).valueOf(),
+        end: dayjs(value[1]).valueOf()
+    }
 
     return (
         <Card>
@@ -129,15 +109,14 @@ function SectionCard({title, group}) {
                         <Space>
                             <Space.Compact block>
                                 <DatePicker.RangePicker
-                                    value={dates || value}
-                                    disabledDate={disabledDate}
-                                    onCalendarChange={(val) => {
-                                        setDates(val);
-                                    }}
+                                    defaultValue={value}
+                                    format={dateFormat}
+                                    value={value}
+                                    locale={locale}
+
                                     onChange={(val) => {
                                         setValue(val);
                                     }}
-                                    onOpenChange={onOpenChange}
                                     changeOnBlur
                                 />
                                 {/*<Button type="primary">查询</Button>*/}
@@ -150,7 +129,7 @@ function SectionCard({title, group}) {
                 <Flex flex={1} justify="flex-start">
                     <Flex flex={1} gap={8} vertical>
                         {
-                            checkedVal.map((item, index) => (<LineChart key={index} url={item} />))
+                            checkedVal.map((item, index) => (<LineChart key={index} url={item} range={range}/>))
                         }
                     </Flex>
                 </Flex>
@@ -159,20 +138,23 @@ function SectionCard({title, group}) {
     )
 }
 
-function LineChart({url}) {
+function LineChart({url, range}) {
     const [data, setData] = useState([]);
 
     useEffect(() => {
         const asyncFetch = () => {
             fetch(url)
                 .then((response) => response.json())
-                .then((json) => setData(json))
+                .then((json) => {
+                    const {start, end} = range;
+                    setData(json.filter(x => x.timestamp > start && x.timestamp < end))
+                })
                 .catch((error) => {
                     console.log('fetch data failed', error);
                 });
         };
         asyncFetch();
-    }, [url]);
+    }, [url, range]);
 
     const config = {
         data,
@@ -191,6 +173,6 @@ function LineChart({url}) {
     };
 
     return (
-        <Line {...config} style={{width: '100%', minHeight: 200}}/>
+        <Line {...config} style={{width: '100%', minHeight: 300}}/>
     )
 }
