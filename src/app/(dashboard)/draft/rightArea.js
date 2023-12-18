@@ -49,9 +49,9 @@ export function RightArea() {
                             <Button disabled>保存为我的方案</Button>
                         </Space.Compact>
                     </Space>
-                    <Space>
-                        <Typography.Title level={3} style={{marginBottom: 0}}>$ 180,00000</Typography.Title>
-                    </Space>
+                    {/*<Space>*/}
+                    {/*    <Typography.Title level={3} style={{marginBottom: 0}}>$ 180,00000</Typography.Title>*/}
+                    {/*</Space>*/}
                 </Flex>
             </Card>
             <Display type={value}/>
